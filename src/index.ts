@@ -1,95 +1,122 @@
+//  #############  Type
 
-// ##########  Type Assertion 
-
-let response: any = "41" // it still shows type is "any" check by hovering on "response"
-
-// let numericLength: number = response.length // we do not get all properties if i use dot(.) on response as for TS it is still "any" type not string.
-// To handle this we use   "type Assertion"
-
-let numericLength: number = (response as string).length 
-
-
-type Book = {
-    name: string
+function makeOrder(order: {type: string; quantity: number; isItAll: Boolean}){
+    console.log(order);
 }
 
-let bookString = '{"name": "One thing"}'
+function makeOrder2(order: {type: string; quantity: number; isItAll: Boolean}){
+    console.log(order);
+}
 
-// let bookObject = JSON.parse(bookString) // TS does not know if this refers the same types as book. 
-let bookObject = JSON.parse(bookString) as Book// we forcefully tells that it is
+// Here we can see type signature of order is same for both 
 
-console.log(bookObject.name)// we can check the dot properties
+type orderType = { // we create type and provide it to all 
+    type: string;
+    quantity: number; 
+    isItAll: Boolean
+}
 
-
-// HTML types
-const inputElement = document.getElementById("username") as HTMLInputElement // similar nodes are available in React as well
-
-
-// ####################    unknown Vs any
-
-let val1: any;
-val1 = "abc"
-val1 = [1, 2, 3, 4]
-val1 = 3.6
-
-val1.toUpperCase() // here no warning, obviously error will occur when un.
-
-
-
-let val2: unknown;
-val2 = "abc"
-val2 = [1, 2, 3, 4]
-val2 = 3.6
-
-// val2.toUpperCase()              // warning will show
-
-if (typeof val2 === 'string'){
-    val2.toUpperCase() // valid
+function makeOrder3(order: orderType){
+    console.log(order);
 }
 
 
-// ######################     try catch block
-// we can not give type to error in catch block as we do not know if it is custome made or from Error class.
+// where type fails:==>
 
-try {
-    
-// } catch (error: any) { // we prefer type it to inside
-} catch (error) {
-    if (error instanceof Error){
-        console.log(error.message); // if any is there then we can not make sure if error.message is there or not
-    }
-    console.log("Error", error);
+type TeaReceipe = {
+    water: number;
+    milk: number
+}
+
+class MasalaCHai implements TeaReceipe {
+    water = 100;
+    milk = 50
+} // no issue in this --> it allows this as basic type
+
+
+
+type CupSize = "small" | "large"
+
+/*
+class Chai implements CupSize { // hover over Cupsize
+    // error ==> can only implement an object type
+} // Not allowed this
+*/
+// But if we want to do this then we need interface.
+
+
+
+
+// #################### Interface 
+
+// interface of 
+interface TeaReceipe2 { // done
+    water: number;
+    milk: number
+};
+
+
+interface CupSize2 {
+    size: "small" | "large"
+}
+
+class Chai implements CupSize2{
+    size: "small" | "large" = "large";
 }
 
 
-// other example 
-const data: unknown = "hello"
-// const strData: string = data      // will throw warning/error
-const strData: string = data as string // useful, when loading data from environment variables or files
-
-
-
-//  ################    Type Never
-
-type Role = "admin" | "user"
-function redirectBasedOnRole(role: Role): void { // void means "not returning anything" or "do not care about what I am returning"
-    if (role === "admin"){
-        console.log("Redirecting to Admin portal");
-        return
-    }
-    // role; // hover over here
-    if (role === "user"){
-        console.log("Redirecting to User portal");
-        return
-    }
-    role; // hover over here -> Never means all cases are handled
+//similar issue occurs 
+type Response = {ok: true} | {ok: false}
+class myres implements Response{ // asking for interface
+    ok: Boolean = true;
 }
 
 
-// there are functions which does not return anything -> continiously running like server. 
 
-function neverReturn(): never { // servers are best examples
-    while(true){
 
-    }
+
+
+// ################ Union 
+type TeaType = "masala" | "ginger" | "lemon"  // this is called         Literal types
+function orderChai(t: TeaType){
+    console.log(t);    
 }
+
+
+// ################ Intersection 
+type BaseChai = {teaLeaves: number}
+type Extra = {masala: number}
+
+type newMasalaChai = BaseChai & Extra
+
+const cup: newMasalaChai = {
+    teaLeaves: 2,
+    masala: 1 // here both are needed
+}
+
+
+
+// optional Values 
+
+type User = {
+    username: string;
+    bio?: string; // optional
+}
+
+const u1: User = {username: "Raj"}
+const u2: User = {username: "Raj", bio: "Hello"}
+
+
+// read Only Values
+
+type Config = {
+    readonly appName: string;
+    version: number;
+}
+
+const cfg: Config = {
+    appName: "TS App",
+    version: 1
+}
+
+// cfg.appName = "new app name" // error as it is read only
