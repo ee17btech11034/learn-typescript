@@ -1,0 +1,71 @@
+# TypeScript:==>
+    -- TS provides extra layer of security. 
+    -- extension is ".ts".
+    -- TS   =    JS + Types (Data Types)
+
+
+    -- Why TS came:
+        -- Too much freedom in JS for data types. That's why JS is called Loosely typed.
+        -- Loose Docs:-> Very hard to create a document using tools because of loose Data Types. Like JS Docs, etc
+        -- Developer Tooling :-> chrome extension or developer modes tells the expected behaviour like for React dev tools, Python Java, etc. 
+                -- Some times expected output is different that what we are getting. 
+                    -- Like in JS example greet will return "Hello 42"  
+                    -- this is not a bug as it is printing but behaviour is not as expected.
+        
+        -- AI is more binded with TS than JS.
+
+    -- TS:
+        -- TS is an Addon, means uses JS in the end.
+        -- TS never runs,      TS ---> Process---> JS
+        -- Addon Features:
+            -- type Checker:-> check the types of data types
+                --> this provides consistency in code
+        
+        -- Nowadays, all modern editors provide TS support. So no need to install this.
+        
+        -- to run explicitly:
+            -- `bun base.ts` or
+            -- `node base.ts`
+
+        --Github: -- https://github.com/microsoft/Typescript 
+            -- Go to playground and enjoy.
+            -- src > compiler > parser.ts (Read this)
+
+    
+    -- TS Working:
+        --> Flow:==>
+                TS ==> Lexer ==> Parser ==> Binder ==> Checker ==> Emmiter ==> [.js, .d.ts, .map]
+
+            -- Lexer:->
+                    -- Lexer is user in mostly every language. 
+                    -- It's work is to do tockenization. Tockens are keywords of that language like function, const, let, for, if, ...
+                    -- It just check this identifiers/keywords and heck the spelling or paranthesis for these. 
+
+            -- Parser:->
+                    -- It is also available in most language.
+                    -- src > compiler > parser.ts (Read this) in github repo.
+                    -- It creates a Tree Syntax which is called          AST (Abstract Syntax Tree) or CST (Concrete Syntax Tree)
+                    -- It creates a tree for all the elements like how many keywords, data flow, etc are present in our code.
+                        -- Tools like AST explorer, etc.
+                    -- We have parser Dignostic tools as well.
+
+            -- Binder:->
+                    -- It is not present in all languages.
+                    -- It creates a          Symbol Tables      from symbols we provided like input type, output types etc 
+                    -- We keep track of          Parent Pointer      in tree. 
+                    -- Flow Node are created. (like if execute ho to kya run ho and else ho to kya run kare.)
+                
+            -- Checker:->
+                    -- It generally go through twice in the code. 
+                    -- 2 types of checking happens:
+                        1. Structural checking:
+                            -- It checks that the Node type is same on each call or got changed. 
+                            -- There is a method         "Short Circuit".    
+                        2. Find the name of this??
+
+            -- Emmiter:->
+                    -- Additional things which are added in TS file, gets removed by this when dumping in JS file. 
+                    -- Adds "strict mode" or add things related to specific ES version. 
+                    -- Node generally run this Emitter, that's why it does not throw error just show warning. 
+                    -- Node just has Emitter not whole TS. 
+                    
