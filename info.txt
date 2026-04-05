@@ -4,31 +4,27 @@
     -- TS   =    JS + Types (Data Types)
 
 
-    -- TS Setup:
-        -- We can install TS, Globally or Locally (project wise). 
-            -- Better for project wise, as we may work on different versions.
+    -- TS Types:
+        -- 1. Annotations:
+                -- We explicitly tells it.
+                -- most Datatypes from JS and customized as well.
 
-        -- 1. Traditional Setup way:
-                    -- `npm init -y`   [we can use bun as well]
-                    -- `npm i -D typescript`
-                            -- we can user typescript with node the       @types/node 
-                            -- when ts with react      then       @types/react
-                    -- `npx tsc --init`
-                        -- initialize a config using tsc (ts compiler)
-                        -- uncomment      `rootdir, outdir` 
-                                -- create a "dist" folder for outdir
-                                -- create a "src" folder for rootdir
-                        -- go though recommended options, etc.
-                        -- Go to TS playground and then check these TS Config.
+        -- 2. Inference:
+                -- TS/JS will automatically understand it
+                -- JS ke jitne Data Types hote hai unko TS khud samajh sakta hai.
 
-                    
-                    -- create a .ts file in src. 
-                    -- `npx tsc` 
-                        -- check the dist folder.
-                    -- `node ./dist/index.js`
-                        -- to execute this. 
+        
+        -- union:
+                -- chossing from multiple data types, Data types can be custom as well
+        
+        -- any:
+                -- any type is possbile, it occurs when we just declare it, not initialize.
 
-                    -- add start and dev script in package.json file
-                        -- on some places we use     `"dev": "npx ts-node src/index.ts"`
-                    
-                    
+        -- unknown:
+                -- it says at the declaration time we do not know the type but before assigning you will have to tell me the type.
+                -- relatively safe than "any".
+                -- This is called    "Type Narrowing"  *******
+        
+        -- Type Guards:
+                -- We can create our own types
+        
