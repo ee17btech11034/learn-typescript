@@ -1,130 +1,95 @@
-function greet(name: string): string {
-    return `Hello, ${name}`
+
+// ##########  Type Assertion 
+
+let response: any = "41" // it still shows type is "any" check by hovering on "response"
+
+// let numericLength: number = response.length // we do not get all properties if i use dot(.) on response as for TS it is still "any" type not string.
+// To handle this we use   "type Assertion"
+
+let numericLength: number = (response as string).length 
+
+
+type Book = {
+    name: string
 }
 
-const username: string = "Raja"; // Annotation
-let username2 = "Raja"; // inference as username2 is string now
-// username2 = 5;  // warning here
+let bookString = '{"name": "One thing"}'
 
-let cups = Math.random() > 0.5 ? 10 : '5'; // also inderence (hover over cups)
+// let bookObject = JSON.parse(bookString) // TS does not know if this refers the same types as book. 
+let bookObject = JSON.parse(bookString) as Book// we forcefully tells that it is
 
-
-// union
-let subs: number | string = '1M' // num as 10, 1000 if small val but in string if large val
-
-let apiRequestStatus: 'pending' | 'success' | 'error' = 'pending' // we can assign values from these custom only. 
-// apiRequestStatus = 'raj' // warning
-apiRequestStatus = "error"; // perfectly fine
+console.log(bookObject.name)// we can check the dot properties
 
 
-//any 
-let val1; // here its type is "any" which is dangerous
-val1 = 5;
-val1 = '10'; // both are fine for it as its type is any.
-
-// to avoid
-let val2: string; // it will block 
-let val3: string | undefined; // if we will assign the val in loop. TS throw warning if "undefined is not given as it is not sure if loop will run or not."
+// HTML types
+const inputElement = document.getElementById("username") as HTMLInputElement // similar nodes are available in React as well
 
 
-// ##########     Type Narrowing (unknow type)
+// ####################    unknown Vs any
 
-function getNewFunc(value: string | number){
-    if (typeof value === 'string'){
-        return 'It is a string' // check (value.) (it is a dot) means property here
-    }
-    else{
-        return 5 // check value. (dot) properties
-    }
-}
+let val1: any;
+val1 = "abc"
+val1 = [1, 2, 3, 4]
+val1 = 3.6
 
-// truthyfy
-function server(msg?: string){ // truthify
-    if (msg){
-        return `${msg}` // Making sure message get returned
-    }
-    return "no value"
-}
+val1.toUpperCase() // here no warning, obviously error will occur when un.
 
 
-// exostive checks -> maybe speling mistake 
-function order(size: 'small' | 'medium' | 'large' | number){
-    // write if for all
+
+let val2: unknown;
+val2 = "abc"
+val2 = [1, 2, 3, 4]
+val2 = 3.6
+
+// val2.toUpperCase()              // warning will show
+
+if (typeof val2 === 'string'){
+    val2.toUpperCase() // valid
 }
 
 
-// class instances 
-class A {
-    func1(){
-        return 'a'
-    }
-} 
-class B {
-    func1(){
-        return 'b'
-    }
-} 
+// ######################     try catch block
+// we can not give type to error in catch block as we do not know if it is custome made or from Error class.
 
-function func1(val: A | B){
-    if (val instanceof A){
-        return "A"
-    }
-    return "B"
-}
-
-
-
-
-// #############    Type Guards 
-// type order = {} // empty -> no use
-type order = {
-    type: string
-    sugar: number
-}
-
-function isOrder(obj: any): obj is order{
-    return (
-        typeof obj === "object" && 
-        obj !== null && 
-        typeof obj.type === 'string' &&
-        typeof obj.sugar === 'number'
-    )  
-}
-
-function serveOrder(item: order | string){
-    if (isOrder(item)){
-        return `${item.type}`
-    }
-    return item // as string
-}
-
-
-type MasalaChai = {type: "masala"; spicelevel: number}
-type GingerChai = {type: "ginger"; amount: number}
-type ElaichiChai = {type: "elaichi"; aroma: string}
-
-type Chai = MasalaChai | GingerChai | ElaichiChai
-
-function MakeChai (val: Chai){
-    switch (val.type) {
-        case "masala": // we get these options if we just enter double quotes
-            
-            break;
+try {
     
-        default:
-            break;
+// } catch (error: any) { // we prefer type it to inside
+} catch (error) {
+    if (error instanceof Error){
+        console.log(error.message); // if any is there then we can not make sure if error.message is there or not
     }
-}
-
-function brew(val: MasalaChai | GingerChai){
-    if ('spicelevel' in order){ // this can also be done but not recommended as we are just checking a property
-
-    }
+    console.log("Error", error);
 }
 
 
+// other example 
+const data: unknown = "hello"
+// const strData: string = data      // will throw warning/error
+const strData: string = data as string // useful, when loading data from environment variables or files
 
-function isStringArray(arr: unknown): arr is string[]{ // input type is unknow but ensuring output is arr of string.
 
-}// always make sure we return a propert type for output
-console.log(greet(username));
+
+//  ################    Type Never
+
+type Role = "admin" | "user"
+function redirectBasedOnRole(role: Role): void { // void means "not returning anything" or "do not care about what I am returning"
+    if (role === "admin"){
+        console.log("Redirecting to Admin portal");
+        return
+    }
+    // role; // hover over here
+    if (role === "user"){
+        console.log("Redirecting to User portal");
+        return
+    }
+    role; // hover over here -> Never means all cases are handled
+}
+
+
+// there are functions which does not return anything -> continiously running like server. 
+
+function neverReturn(): never { // servers are best examples
+    while(true){
+
+    }
+}

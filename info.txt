@@ -5,26 +5,10 @@
 
 
     -- TS Types:
-        -- 1. Annotations:
-                -- We explicitly tells it.
-                -- most Datatypes from JS and customized as well.
-
-        -- 2. Inference:
-                -- TS/JS will automatically understand it
-                -- JS ke jitne Data Types hote hai unko TS khud samajh sakta hai.
-
+        -- Type Assertion:
+                -- if we define a type of any to any val and letter try to access the property of that type using dot(.)
+                -- Then we do not get all options.
+                -- Here we forcefully tells its type and then use dot properties
         
-        -- union:
-                -- chossing from multiple data types, Data types can be custom as well
-        
-        -- any:
-                -- any type is possbile, it occurs when we just declare it, not initialize.
-
-        -- unknown:
-                -- it says at the declaration time we do not know the type but before assigning you will have to tell me the type.
-                -- relatively safe than "any".
-                -- This is called    "Type Narrowing"  *******
-        
-        -- Type Guards:
-                -- We can create our own types
-        
+        -- Type Never: 
+                --
