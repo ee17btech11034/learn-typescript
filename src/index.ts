@@ -1,121 +1,85 @@
-// ########## Interface
+// #####################   type Definitions
 
-// interface's goal is to shap the data
+// declaration file:
 
-interface Chai {
-    flavour: string;
-    price: number 
+
+
+// axios use
+
+// basic axios 
+
+
+
+/* Basic 
+import axios from 'axios'
+
+axios.get('https://example.com/data').then(response=>{
+    console.log(response.data);    
+})
+
+*/
+
+
+// using TS 
+import axios, {AxiosResponse} from 'axios'
+
+interface Todo { // dtaat type of response we will get
+    userId: number;
+    id: number;
+    title: string;
+    completed: boolean
 }
 
-// 70-80% types and interfaces are interchangable
-
-const masalaChai: Chai = {
-    flavour: "masala",
-    price: 20,
-    
-}
-
-// interface define the structure but does not generate any code in JS
-
-interface newMethods {
-    readonly id: number; // readonly
-    name?: string; // optional
-
-}
-
-
-// methods in interface 
-// we directly can not write method or functionality in interface.
-interface DiscountCalculator {
-    (price: number): number; // we just declare this functionality
-}
-const apply50: DiscountCalculator = (p) => p*0.5 // write functions here
-const apply30: DiscountCalculator = (p) => p*0.3
-
-
-
-// multiple methods 
-interface TeaMachine{
-    start(price: number):void;
-    stop(): void;
-}
-
-const machine: TeaMachine = {
-    // start(20){ // error
-    start(price: number){
-        console.log("start");   
-    },
-    stop(){
-        console.log("Stop");
+const fetchData = async() =>{
+    try {// axiosresponse is genericssponse<>
+        const response: AxiosResponse<Todo> = await axios.get("https://jsonplaceholder.typicode.com/todos/1")
+        // response.  check this
+    } 
+    // catch (error) { // can use any but ot recommended
+    catch (error: any) {
+        if (axios.isAxiosError(error)){
+            console.log("Axios Error", error.message)
+        }
     }
 }
 
 
-// index signatures
-interface ChaiRating {
-    [flavour: string]: number;
-}
 
-const rating: ChaiRating = {
-    masala: 4.5,
-    ginger: 3.9
-}
+// Fetch method
 
+const fetchData2 = async() =>{
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos/1")
+        
+        if (!response.ok){
+            throw new Error(`HTTP error ${response.status}`)
+        }
 
-// combine interfaces 
-interface User { // suppose this User interface is coming rom some library
-    name: string
-}
-interface User { // we defined this
-    age: number
-}
-
-const u: User = { // here interface automatically gets merged
-    name: "Raj",
-    age: 25 // we will have to define all
+        const data: Todo = await response.json()
+    } 
+    // catch (error) { // can use any but ot recommended
+    catch (error: any) {
+        // check these methods
+    }
 }
 
 
-// extends interface 
-interface A {a: string}
-interface B {b: string}
-
-interface C extends A, B {}
 
 
 
 
-
-// ##################   Generics
-
-function wrapinArray<T>(item: T): T[]{ // T is generics here
-    return [item]
-}
-
-wrapinArray("masala") // now T is of string
-wrapinArray(45) // T is of number
-wrapinArray({flavour: "ginger"})
+/*
+// Sometimes    `import axios, {AxiosResponse} from 'axios' `
+{AxiosResponse} will get red lines in it. these are not errors 
+As sometimes TS does not allow package andtypes to to imported in same line so 
 
 
-// Generics are mostly used in designing Library or frameworks.
+    import axios, {AxiosResponse} from 'axios'
 
-function pair<A, B>(a: A, b: B): [A, B] {
-    return [a, b]
-}
+            OR 
 
-pair("masala", "test")
-pair("masala", 5)
+    import axios from 'axios'
+    import type {AxiosResponse} from 'axios'
 
 
-// we can create Generic types and Generic interfaces
-
-interface Box<T> {
-    content: T 
-}
-
-const numberBox: Box<number> = {content: 10} // 
-const stringBox: Box<string> = {content: "10"} // 
-
-// Generics support Partial, and others as well
-
-// Generics are used in API responses, Form state in react
+    use this (2nd one). it tells that i want type as well 

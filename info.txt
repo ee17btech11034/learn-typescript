@@ -30,4 +30,18 @@
     
     -- Interface and Generics
         -- 
-        
+
+    -- type Definitions/declaration and Axios
+            -- type declaration file:
+                    -- we have ".d.ts" file, we generally do not write this but in some cases we have to.
+                    -- type Declaration provides 2 things in TS: 
+                            -- 1. Hints
+                            -- 2. Errors
+                    -- Suggestions, warnings, or things we get in TS, mostly comes from these declaration files.
+                    -- node_modules > TS > lib > check files like dom
+
+                    -- Supose we want to use some library in TS and we are not getting suggestion then;
+                        -- `npm i some-library`  like `npm i axios`  (axios is webrequest handler)
+                        -- `npm i -D @types/som-library`   like `nom i -D @types/axios`  ==> now we will get suggestion
+
+                        -- we can manually add these files as well.
