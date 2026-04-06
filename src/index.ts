@@ -1,87 +1,121 @@
-// ######### OOP
+// ########## Interface
 
-/*
-class Chai {
+// interface's goal is to shap the data
+
+interface Chai {
     flavour: string;
-    price: number // it is throwing warning as it is asking for constructor
-}
-*/
-
-class Chai {
-    flavour: string;
-    price: number
-
-    constructor(flavour: string, price: number){
-        this.flavour = flavour;
-        this.price = price
-    }
+    price: number 
 }
 
-const masalaChai = new Chai("Ginger", 20)
-masalaChai.flavour = "Masala"
+// 70-80% types and interfaces are interchangable
 
-
-
-
-// Access Modifiers ==> public, protected, private
-class CHai2 {
-    public flavour: string = "Masala"
-
-    private secret = 'abc' // can not access directly outside class
-    #price = 500 // this is also private (it comes from JS)
-
-    readonly capacity: number = 200 // can set during constructor/only once
-
-
-    // can write getter setter as well
-    private _val1 = 2
-    get val1(){
-        return this._val1
-    }
-    set val1(val: number){
-        this._val1 = val
-    }
-
-
-    // static member
-    static shopName = "MB"
-    constructor(public flavour2: string[]){
-
-    }
+const masalaChai: Chai = {
+    flavour: "masala",
+    price: 20,
+    
 }
 
-// static can only be accessed by        "CHai2.shopName"    not from instance of class. 
+// interface define the structure but does not generate any code in JS
 
+interface newMethods {
+    readonly id: number; // readonly
+    name?: string; // optional
 
-
-// abstract class:-> we restrict that no one can create object from these
-abstract class Drink {
-    abstract make(): void // mostly only syntax are defined in abstract classes
 }
 
-// we have to create a class to use this
 
-// class MyChai extends Drink{} // error untill you define make method
+// methods in interface 
+// we directly can not write method or functionality in interface.
+interface DiscountCalculator {
+    (price: number): number; // we just declare this functionality
+}
+const apply50: DiscountCalculator = (p) => p*0.5 // write functions here
+const apply30: DiscountCalculator = (p) => p*0.3
 
-class MyChai extends Drink{
-    make(): void {
-        console.log("hahaaha");
+
+
+// multiple methods 
+interface TeaMachine{
+    start(price: number):void;
+    stop(): void;
+}
+
+const machine: TeaMachine = {
+    // start(20){ // error
+    start(price: number){
+        console.log("start");   
+    },
+    stop(){
+        console.log("Stop");
     }
 }
 
 
-
-
-// composition --> 
-// sometimes people composition, somtimes inheritance
-class Heater{
-    heat(){}
+// index signatures
+interface ChaiRating {
+    [flavour: string]: number;
 }
-class ChaiMaker{
-    constructor(private heater: Heater){
 
-    }
-    make(){
-        this.heater.heat
-    }
+const rating: ChaiRating = {
+    masala: 4.5,
+    ginger: 3.9
 }
+
+
+// combine interfaces 
+interface User { // suppose this User interface is coming rom some library
+    name: string
+}
+interface User { // we defined this
+    age: number
+}
+
+const u: User = { // here interface automatically gets merged
+    name: "Raj",
+    age: 25 // we will have to define all
+}
+
+
+// extends interface 
+interface A {a: string}
+interface B {b: string}
+
+interface C extends A, B {}
+
+
+
+
+
+// ##################   Generics
+
+function wrapinArray<T>(item: T): T[]{ // T is generics here
+    return [item]
+}
+
+wrapinArray("masala") // now T is of string
+wrapinArray(45) // T is of number
+wrapinArray({flavour: "ginger"})
+
+
+// Generics are mostly used in designing Library or frameworks.
+
+function pair<A, B>(a: A, b: B): [A, B] {
+    return [a, b]
+}
+
+pair("masala", "test")
+pair("masala", 5)
+
+
+// we can create Generic types and Generic interfaces
+
+interface Box<T> {
+    content: T 
+}
+
+const numberBox: Box<number> = {content: 10} // 
+const stringBox: Box<string> = {content: "10"} // 
+
+// Generics support Partial, and others as well
+
+// Generics are used in API responses, Form state in react

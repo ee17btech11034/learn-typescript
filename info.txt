@@ -27,3 +27,7 @@
 
     -- OOP concept:
         --
+    
+    -- Interface and Generics
+        -- 
+        
