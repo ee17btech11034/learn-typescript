@@ -1,44 +1,136 @@
-// # Functions 
-// input paras, type and output return type
+// #################      Array
 
-function makeChai(type: string, cups: number){
-    console.log(`${cups} cups of ${type} tea.`);    
-}
+const chaiFlavours: string[] = ["str1", "str2"] // all elements must be of string
+const chaiFlavours2: number[] = [1, 2] // all elements must be of number
 
-makeChai("Masala", 2)
-
-
-function getChaiPrice(): number {
-    return 25;
-}
+const rating: Array<number> = [4,5,6] // we can use custom datat types instead of number as well 
 
 
 
-// sometimes we do not know the exact type
-// function makeOrder(order: string): { // here we do not know the type of return
-function makeOrder(order: string): string | null{ // here we know
-    if (!order) return null;
-    return order 
-}
+// arr of objects
 
-
-
-function logChai(): void {
-    // not returning any specific type or we do not care
-    return;
-}
-
-
-
-// optional and Default params 
-// working is almost same for both, both are written in the end
-
-function orderChai(type?: string){} // optional
-function orderChai2(type: string = "Ginger"){} // optional
-
-
-// complex 
-function abc(order: { // this is also perfect
+type Chai = {
     name: string;
-    price: number
-}){}
+    price: number 
+}
+
+const menu: Chai[] = [
+    {
+        name: "Masala",
+        price: 20
+    },
+    {
+        name: "Ginger",
+        price: 25
+    }
+]
+
+
+
+// readonly arr 
+
+const cities: readonly string[] = ["Delhi", "Jaipur"]
+
+// cities.push("Pune") // error as we can not edit this arr
+
+
+// sometimes we do unions and all
+
+
+// multidimentional arr
+const table: number[][] = [
+    [1,2,3],
+    [4,5,6]
+]
+
+
+
+
+
+// ########## tuples
+
+let chaiTuple: [string, number];
+
+// chaiTuple = [20, "Masala"] // error as exact format is needed 
+chaiTuple = ["Masala", 20] 
+
+let userInfo: [string, number, boolean?] // here boolean is optional
+userInfo = ["masala", 20] // no error here
+userInfo = ["masala", 20, true] // no error here
+
+
+// readonly tuple
+// we define readonly property first in all scenarios
+
+const location: readonly [number, number] = [26.7, 34.7]
+
+
+// named tuples
+const chaiIteams: [name: string, price: number] = ["abc", 20]
+
+
+// push working in tuple
+let t: [string] = ["Hello"]
+t.push("extra") // this will work. It can cause anomalies some times
+
+
+
+
+// #######################   Enums 
+// restrict the choices
+
+enum CupSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
+const size = CupSize.LARGE
+
+
+
+// incremental values 
+/*
+enum status {
+    PENDING = 100,
+    SERVED, // 101  // if we do not give the value to it thn they get incremental val from above one
+    CANCELLED // 102
+}
+    */
+enum status {
+    PENDING = 100,
+    SERVED, //101
+    CANCELLED //102
+}
+
+
+
+// 
+enum ChaiType {
+    MASALA = "masala",
+    GINGER = "ginger"
+}
+function makeChai(type: ChaiType){
+    console.log(type);
+}
+makeChai(ChaiType.GINGER) // valid 
+// makeChai("masala") // error as we can only select from those values
+
+
+// Haterogenous values
+// multiple types in a single enum
+// Not a good practice but 
+
+enum RandomEnum {
+    ID = 1,
+    NAME= "Raj"
+}
+
+// const keyword in enum
+const enum CupSizes {
+    SMALL = 100,
+    MEDIUM = 300,
+    LARGE = 500
+}
+
+const s = CupSizes.LARGE

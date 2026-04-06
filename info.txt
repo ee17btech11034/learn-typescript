@@ -21,3 +21,6 @@
             -- 
         
     -- Functions
+
+    -- Array, enum, tuples:
+        -- these are foundational Data types of TS
