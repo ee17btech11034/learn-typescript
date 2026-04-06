@@ -1,122 +1,143 @@
-//  #############  Type
+// ####################   Objects
 
-function makeOrder(order: {type: string; quantity: number; isItAll: Boolean}){
-    console.log(order);
+const chai = {
+    name: "Masala chai",
+    price: 20,
+    isHot: true
 }
 
-function makeOrder2(order: {type: string; quantity: number; isItAll: Boolean}){
-    console.log(order);
+// how do we declare
+
+let tea: {
+    name: string;
+    price: number;
+    isHot: boolean
 }
 
-// Here we can see type signature of order is same for both 
-
-type orderType = { // we create type and provide it to all 
-    type: string;
-    quantity: number; 
-    isItAll: Boolean
-}
-
-function makeOrder3(order: orderType){
-    console.log(order);
-}
-
-
-// where type fails:==>
-
-type TeaReceipe = {
-    water: number;
-    milk: number
-}
-
-class MasalaCHai implements TeaReceipe {
-    water = 100;
-    milk = 50
-} // no issue in this --> it allows this as basic type
-
-
-
-type CupSize = "small" | "large"
-
-/*
-class Chai implements CupSize { // hover over Cupsize
-    // error ==> can only implement an object type
-} // Not allowed this
-*/
-// But if we want to do this then we need interface.
-
-
-
-
-// #################### Interface 
-
-// interface of 
-interface TeaReceipe2 { // done
-    water: number;
-    milk: number
-};
-
-
-interface CupSize2 {
-    size: "small" | "large"
-}
-
-class Chai implements CupSize2{
-    size: "small" | "large" = "large";
-}
-
-
-//similar issue occurs 
-type Response = {ok: true} | {ok: false}
-class myres implements Response{ // asking for interface
-    ok: Boolean = true;
+tea = { // initialized
+    name: "Masala chai",
+    price: 20,
+    isHot: true
 }
 
 
 
+type Tea = {
+    name: string;
+    price: number; 
+    ingrediants: string[] // arr of str
+}
 
-
-
-// ################ Union 
-type TeaType = "masala" | "ginger" | "lemon"  // this is called         Literal types
-function orderChai(t: TeaType){
-    console.log(t);    
+const adrakChai: Tea = {
+    name: "Masala chai",
+    price: 20,
+    ingrediants: ['ginger', 'tea leaves'] // arr of str only
 }
 
 
-// ################ Intersection 
-type BaseChai = {teaLeaves: number}
-type Extra = {masala: number}
+// ############ Duck typing  Vs Structural Typing
+// Structural typing runs on looks-alike.
 
-type newMasalaChai = BaseChai & Extra
+type Cup = {size: string};
 
-const cup: newMasalaChai = {
-    teaLeaves: 2,
-    masala: 1 // here both are needed
-}
+let smallCup: Cup = {size: "200ml"}
+
+let bigCup = {size: "500ml", material: "steel"}
+
+smallCup = bigCup // here no issue and no warning bcz
+// bare minimum properties are satisfied for smallCup. 
 
 
-
-// optional Values 
-
+// Seperation in TS  ==> Split out Data types
 type User = {
     username: string;
-    bio?: string; // optional
+    password: string
 }
 
-const u1: User = {username: "Raj"}
-const u2: User = {username: "Raj", bio: "Hello"}
-
-
-// read Only Values
-
-type Config = {
-    readonly appName: string;
-    version: number;
+const u: User = {
+    username: "Raj",
+    password: "123"
 }
 
-const cfg: Config = {
-    appName: "TS App",
-    version: 1
+type Item = {name: string; quantity: number}
+type Address = {state: string; pincode: number}
+
+type Order = {
+    id: string;
+    items: Item[]; // there will be multiple items, so arr or items
+    address: Address
 }
 
-// cfg.appName = "new app name" // error as it is read only
+
+
+
+// Sometimes we define in one way but use in multiple ways 
+
+type Chai = {
+    name: string;
+    price: number;
+    isHot: boolean
+}
+
+const updateChai = (updates: Partial<Chai>)=>{ // parial obj means we can pass partial values
+    console.log("update: ", updates);
+}
+
+updateChai({price: 25}) // this is valid
+updateChai({isHot: true}) // this is valid
+
+// but issue is we can pass empty obj as well and it does not thro the error.
+updateChai({})
+
+
+// another example on the above
+type ChaiOrder = {
+    name?: string;
+    quantity?: number
+}
+
+const placeOrder = (order: Required<ChaiOrder>)=>{ // it needs both
+    console.log(order);
+}
+
+// placeOrder({}) // here it will throw error as it is required
+// it does not matter that they were optional at declaration time but it says it need both.
+// placeOrder({name: "ginger"}) // error
+placeOrder({name: "ginger", quantity: 2}) // 
+
+
+
+// pic 
+
+type BestChai = {
+    name: string;
+    price: number;
+    isHot: boolean;
+    ingredients: string[]
+}
+
+type BasicChaiInfo = Pick<BestChai, "name" | "price"> // it says we only need these 2, other I do not care
+
+const chaiinfo: BasicChaiInfo = {
+    name: "Lemon Tea",
+    price: 30
+}
+
+
+// omit
+
+
+type BestChai2 = {
+    name: string;
+    price: number;
+    isHot: boolean;
+    secretIngredients: string
+}
+
+type PublicChaiInfo = Omit<BestChai2, "secretIngredients"> // it says we do not need to write this, can be skipped 
+
+const chaiinfo2: PublicChaiInfo = {
+    name: "Lemon Tea",
+    price: 30,
+    isHot: true
+}
